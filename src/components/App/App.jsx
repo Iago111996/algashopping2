@@ -6,8 +6,9 @@ import ShoppingList from '../ShoppingList'
 import { Wrapper, Container } from './App.styles'
 import productsMock from '../../mocks/products.json'
 import extractPercentage from '../../utils/extractPercentage'
+import Calculator from '../Calculator'
 
-function App () {
+function App() {
   const colors = ['#62CBC6', '#00ABAD', '#00858C', '#006073', '#004D61']
 
   const [products, setProducts] = useState(productsMock.products)
@@ -17,7 +18,7 @@ function App () {
   useEffect(() => {
     const newSelectedProducts = products
       .filter(product => product.checked)
-    
+
     setSelectedProducts(newSelectedProducts)
   }, [products])
 
@@ -29,11 +30,11 @@ function App () {
     setTotalPrice(total)
   }, [selectedProducts])
 
-  function handleToggle (id, checked, name) {
+  function handleToggle(id, checked, name) {
     const newProducts = products.map(product =>
-        product.id === id
-          ? { ...product, checked: !product.checked }
-          : product
+      product.id === id
+        ? { ...product, checked: !product.checked }
+        : product
     )
     setProducts(newProducts)
   }
@@ -103,12 +104,14 @@ function App () {
               previsão de gastos:
             </h2>
             <div style={{ fontSize: 24 }}>
-              { totalPrice.toLocaleString('pt-br', {
+              {totalPrice.toLocaleString('pt-br', {
                 minimumFractionDigits: 2,
                 style: 'currency',
                 currency: 'BRL'
-              }) }
+              })}
             </div>
+
+           <Calculator />
           </div>
         </div>}
       />
