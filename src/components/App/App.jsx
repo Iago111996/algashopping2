@@ -1,42 +1,25 @@
 import React, { useState, useEffect } from 'react'
-import LineChart from '../../shared/LineChart'
-import AppContainer from '../AppContainer/AppContainer'
+import { Wrapper, Container } from './App.styles'
+
 import AppHeader from '../AppHeader'
 import ShoppingList from '../ShoppingList'
-import { Wrapper, Container } from './App.styles'
-import productsMock from '../../mocks/products.json'
+import LineChart from '../../shared/LineChart'
+import AppContainer from '../AppContainer/AppContainer'
 import extractPercentage from '../../utils/extractPercentage'
-import Calculator from '../Calculator'
+
+import { useSelector, useDispatch } from 'react-redux'
+import { toggleProduct } from '../../store/Products/Products.actions'
+import { selectProductsTotalPrice, selectSelectedProducts } from '../../store/Products/Products.selectors'
 
 function App() {
   const colors = ['#62CBC6', '#00ABAD', '#00858C', '#006073', '#004D61']
 
-  const [products, setProducts] = useState(productsMock.products)
-  const [selectedProducts, setSelectedProducts] = useState([])
-  const [totalPrice, setTotalPrice] = useState(0)
+  const dispatch = useDispatch();
+  const selectedProducts = useSelector(selectSelectedProducts);
+  const totalPrice = useSelector(selectProductsTotalPrice);
 
-  useEffect(() => {
-    const newSelectedProducts = products
-      .filter(product => product.checked)
-
-    setSelectedProducts(newSelectedProducts)
-  }, [products])
-
-  useEffect(() => {
-    const total = selectedProducts
-      .map(product => product.price)
-      .reduce((a, b) => a + b, 0)
-
-    setTotalPrice(total)
-  }, [selectedProducts])
-
-  function handleToggle(id, checked, name) {
-    const newProducts = products.map(product =>
-      product.id === id
-        ? { ...product, checked: !product.checked }
-        : product
-    )
-    setProducts(newProducts)
+  function handleToggle(id) {
+    dispatch(toggleProduct(id));
   }
 
   return <Wrapper>
@@ -46,14 +29,13 @@ function App() {
         left={
           <ShoppingList
             title="Produtos disponíveis"
-            products={products}
             onToggle={handleToggle}
           />}
         middle={
           <ShoppingList
             title="Sua lista de compras"
-            products={selectedProducts}
             onToggle={handleToggle}
+            displayOnlySelected={true}
           />}
         right={<div>
           estatisticas
@@ -111,7 +93,7 @@ function App() {
               })}
             </div>
 
-           <Calculator />
+           {/* <Calculator /> */}
           </div>
         </div>}
       />

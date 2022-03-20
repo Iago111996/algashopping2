@@ -1,5 +1,6 @@
 import { createStore, combineReducers } from "redux";
 import reducerCalculator from "./calculator/calculator.reducer";
+import reducerProducts from "./Products/Products.reducer";
 
 function reducer(state = [], action) {
   switch (action.type) {
@@ -11,7 +12,8 @@ function reducer(state = [], action) {
 }
 
 const rootReducer = combineReducers({
-    calculator: reducerCalculator
+  calculator: reducerCalculator,
+  products: reducerProducts,
 });
 
 const store = createStore(rootReducer);
